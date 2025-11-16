@@ -55,7 +55,9 @@ job = os.path.split(casePath)[1]
 
 
 #### TEMPLATE PATH ####
-templatePath = r'/home/openfoam/openFoam/scripts/pptReport/pptTemplate/XXXXXX-Template_Presentation.pptx'
+installPath = os.path.dirname(os.path.realpath(__file__))
+
+templatePath = os.path.join(installPath,'pptTemplate','XXXXXX-Template_Presentation.pptx')
 print("TEMPLATE PATH: %s" % (templatePath))
 
 #Getting number of trials compared
@@ -382,7 +384,7 @@ def main():
 		else:
 			print("			Cannot find %s... will attempt to generate..." % (plotImage))
 			#generating the confidence plots if not found
-			command = "python3.8 /home/openfoam/openFoam/scripts/caseSetup/caseSetup/postUtilities/postRun.py --forces -s -t %s" % (toPlotList)
+			command = "python3.8 %s/postRun.py --forces -s -t %s" % (installPath,toPlotList)
 			os.system(command)
 
 	print("Making confidence plot slides...")
@@ -404,10 +406,10 @@ def main():
 	print("Creating development plots...")
 	if len(caseArray) < 2:
 		caseCommandString = ""
-		command = "python3.8 /home/openfoam/openFoam/scripts/pptReport/binPlotForces_v3_0.py -s -n -i"
+		command = "python3.8 %s/binPlotForces_v3_0.py -s -n -i" % (installPath)
 	else:
 		caseCommandString = " ".join(caseArray[1:])
-		command = "python3.8 /home/openfoam/openFoam/scripts/pptReport/binPlotForces_v3_0.py -t %s -s -n -i" % (caseCommandString)
+		command = "python3.8 %s/binPlotForces_v3_0.py -t %s -s -n -i" % (installPath,caseCommandString)
 		
 	caseString = "_".join(caseArray)
 	os.system(command)
